@@ -25,8 +25,8 @@ void blink_task(__unused void *params) {
     hard_assert(cyw43_arch_init() == PICO_OK);
     while (true) {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, on);
-        if (count++ % 11) on = !on;
-        vTaskDelay(500);
+        if (count++ % 11) on = !on; // flip 10 outta 11 times
+        vTaskDelay(500); // 500 ms
     }
 }
 
