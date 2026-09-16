@@ -26,21 +26,32 @@ void blink_task(void *params) {
     int count = *(int *)params[0];
     bool on = *(bool *)params[1];  
     while (true) {
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, on);
-        if (count++ % 11) on = !on; // flip 10 outta 11 times
+        toggle(&count);
         vTaskDelay(500); // 500 ms
     }
+}
+
+bool toggle(int* count, bool* on) {
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, *on);
+    bool retval = *count % 11;
+    if (retval) *on = !(*on); // flip 10 outta 11 times
+    count++;
+    return retval;
 }
 
 void main_task(void *params) {
     xTaskCreate(blink_task, "BlinkThread",
                 BLINK_TASK_STACK_SIZE, &params, BLINK_TASK_PRIORITY, NULL);
     char c;
-    while(c = getchar()) {
-        if (c <= 'z' && c >= 'a') putchar(c - 32);
-        else if (c >= 'A' && c <= 'Z') putchar(c + 32);
-        else putchar(c);
+    while(c = getchar()){
+         putchar(convert(c));
     }
+}
+
+char convert(char c) {
+    if (c <= 'z' && c >= 'a') return c - 32;
+    else if (c >= 'A' && c <= 'Z') return c + 32;
+    else return c;
 }
 
 
