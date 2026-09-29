@@ -104,3 +104,46 @@ if(PICOTOOL)
         DEPENDS hardware_test
     )
 endif()
+
+# Locate OpenOCD
+find_program(OPENOCD_EXECUTABLE
+    NAMES openocd
+)
+# we can use picotools or openocd, openocd is required for the ci/cd workflow though.
+if(OPENOCD_EXECUTABLE)
+    set(OPENOCD_SCRIPTS_PATH "${OPENOCD_PATH}")
+
+    if(EXISTS "${OPENOCD_PATH}/scripts")
+        set(OPENOCD_SCRIPTS_PATH "${OPENOCD_PATH}/scripts")
+    endif()
+
+    add_custom_target(openocd_test
+        COMMAND
+            ${OPENOCD_EXECUTABLE}
+            -s ${OPENOCD_SCRIPTS_PATH}
+            -f interface/cmsis-dap.cfg
+            -f target/rp2040.cfg
+            -c "adapter speed 5000"
+            -c "program $<TARGET_FILE:mytest> verify reset exit"
+        DEPENDS mytest
+        USES_TERMINAL
+        COMMENT "Flashing mytest with OpenOCD"
+    )
+
+    add_custom_target(openocd_hardware_test
+        COMMAND
+            ${OPENOCD_EXECUTABLE}
+            -s ${OPENOCD_SCRIPTS_PATH}
+            -f interface/cmsis-dap.cfg
+            -f target/rp2040.cfg
+            -c "adapter speed 5000"
+            -c "program $<TARGET_FILE:hardware_test> verify reset exit"
+        DEPENDS hardware_test
+        USES_TERMINAL
+        COMMENT "Flashing hardware_test with OpenOCD"
+    )
+else()
+    message(WARNING
+        "OpenOCD was not found"
+    )
+endif()
