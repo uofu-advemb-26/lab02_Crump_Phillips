@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

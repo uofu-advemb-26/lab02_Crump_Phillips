@@ -1,7 +1,0 @@
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/CMakeFiles/pioasm.dir
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/CMakeFiles/edit_cache.dir
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/CMakeFiles/rebuild_cache.dir
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/CMakeFiles/list_install_components.dir
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/CMakeFiles/install.dir
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/CMakeFiles/install/local.dir
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm/CMakeFiles/install/strip.dir

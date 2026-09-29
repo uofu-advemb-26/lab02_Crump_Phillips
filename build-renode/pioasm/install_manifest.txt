@@ -1,5 +1,0 @@
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm-install/pioasm/pioasm
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm-install/pioasm/pioasmTargets.cmake
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm-install/pioasm/pioasmTargets-release.cmake
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm-install/pioasm/pioasmConfig.cmake
-/home/jackw/lab02_Crump_Phillips/build-renode/pioasm-install/pioasm/pioasmConfigVersion.cmake
