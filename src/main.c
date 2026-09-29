@@ -90,8 +90,7 @@ int main(void)
 
     vTaskStartScheduler();
 
-    /* A correctly configured scheduler never returns. */
-    printf("FreeRTOS scheduler stopped unexpectedly.\n");
+    printf("FreeRTOS scheduler exploded.\n");
     cyw43_arch_deinit();
     return 1;
 }

@@ -5,8 +5,8 @@
  * The RTOS tasks and Pico hardware calls do not happen here.
  */
 
-#ifndef APP_LOGIC_H
-#define APP_LOGIC_H
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
 #include <stdbool.h>
 #include <stdint.h>

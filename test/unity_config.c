@@ -10,11 +10,11 @@ void unityOutputChar(char c)
     putchar(c);
 }
 
-void unityOutputFlush()
+void unityOutputFlush(void)
 {
    fflush(stdout);
 }
 
-void unityOutputComplete()
+void unityOutputComplete(void)
 {
 }

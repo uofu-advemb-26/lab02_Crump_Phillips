@@ -1,15 +1,39 @@
 
-
-target_include_directories(${target_name} PRIVATE
+function(configure_lab_test target_name)
+    target_include_directories(${target_name} PRIVATE
         ${PROJECT_SOURCE_DIR}/include
     )
-target_link_libraries(mytest PRIVATE
-  lab02_functions
-  pico_stdlib
-  pico_async_context_freertos
-  FreeRTOS-Kernel-Heap4
-  unity
+
+    target_link_libraries(${target_name} PRIVATE
+        lab02_functions
+        pico_async_context_freertos
+        FreeRTOS-Kernel-Heap4
+        pico_cyw43_arch_none
+        pico_stdlib
+        unity
+    )
+
+    pico_enable_stdio_uart(${target_name} 1)
+    pico_enable_stdio_usb(${target_name} 0)
+
+    pico_add_extra_outputs(${target_name})
+endfunction()
+
+# unit testing
+add_executable(mytest
+    test_functions.c
+    unity_config.c
 )
+
+configure_lab_test(mytest)
+
+# Hardware integration test
+add_executable(hardware_test
+    test_blink_hardware.c
+    unity_config.c
+)
+
+configure_lab_test(hardware_test)
 
 # The CYW43 is the Wifi/Bluetooth module. If the board is set to pico_w, this
 # variable will be set and the wireless libraries added.
@@ -28,21 +52,6 @@ pico_enable_stdio_usb(mytest 0)
 # It does make the binary non-persistent on a real microcontroller.
 # pico_set_binary_type(mytest no_flash)
 
-# Pure unit tests
-
-add_executable(mytest
-    test_functions.c
-    unity_config.c
-)
-configure_lab_test(mytest)
-
-# Hardware integration tests
-add_executable(hardware_test
-    test_blink_hardware.c
-    unity_config.c
-)
-configure_lab_test(hardware_test)
-
 find_program(RENODE renode
 # This is extra stuff so it can find the mac installation paths.
  NAMES macos_run.command Renode.exe
@@ -54,17 +63,18 @@ set(RENODE_FLAGS
   --pid-file renode.pid
   --console
   )
-
-add_test(NAME simulate_mytest COMMAND
-    ${RENODE}
-     ${RENODE_FLAGS}
-    -e "$ELF=@$<TARGET_FILE:mytest>; $WORKING=@${CMAKE_SOURCE_DIR}; include @${CMAKE_SOURCE_DIR}/test/simulate.resc; start"
-    )
-
-
-find_program(OPENOCD openocd)
 find_program(PICOTOOL picotool)
 
-add_custom_target(flash_test ${PICOTOOL} load -f $<TARGET_FILE:mytest> DEPENDS mytest)
-add_custom_target(openocd_test ${OPENOCD} -s ${OPENOCD_PATH} -f interface/cmsis-dap.cfg -f target/rp2040.cfg -c 'adapter speed 5000' -c 'program "$<TARGET_FILE:mytest>" verify reset exit' DEPENDS mytest)
+if(PICOTOOL)
+    add_custom_target(flash_test
+        COMMAND ${PICOTOOL} load -f $<TARGET_FILE:mytest>
+        COMMAND ${PICOTOOL} reboot
+        DEPENDS mytest
+    )
 
+    add_custom_target(flash_hardware_test
+        COMMAND ${PICOTOOL} load -f $<TARGET_FILE:hardware_test>
+        COMMAND ${PICOTOOL} reboot
+        DEPENDS hardware_test
+    )
+endif()
