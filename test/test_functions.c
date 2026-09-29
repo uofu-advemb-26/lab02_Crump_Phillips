@@ -90,21 +90,20 @@ int main(void)
 {
     stdio_init_all();
 
-    for (;;) {
-        sleep_ms(5000U);
-        printf("\nstarting tests\n");
+    //sleep_ms(5000U);
+    printf("\nstarting tests\n");
 
-        UNITY_BEGIN();
-        RUN_TEST(test_lowercase_a_becomes_uppercase_a);
-        RUN_TEST(test_lowercase_z_becomes_uppercase_z);
-        RUN_TEST(test_uppercase_a_becomes_lowercase_a);
-        RUN_TEST(test_uppercase_z_becomes_lowercase_z);
-        RUN_TEST(test_digit_is_unchanged);
-        RUN_TEST(test_punctuation_is_unchanged);
-        RUN_TEST(test_blink_state_initializes_to_known_values);
-        RUN_TEST(test_iteration_zero_outputs_off_and_holds_next_level);
-        RUN_TEST(test_regular_iteration_outputs_current_level_then_toggles);
-        RUN_TEST(test_multiple_of_eleven_outputs_current_level_and_holds);
-        (void)UNITY_END();
-    }
+    UNITY_BEGIN();
+    RUN_TEST(test_lowercase_a_becomes_uppercase_a);
+    RUN_TEST(test_lowercase_z_becomes_uppercase_z);
+    RUN_TEST(test_uppercase_a_becomes_lowercase_a);
+    RUN_TEST(test_uppercase_z_becomes_lowercase_z);
+    RUN_TEST(test_digit_is_unchanged);
+    RUN_TEST(test_punctuation_is_unchanged);
+    RUN_TEST(test_blink_state_initializes_to_known_values);
+    RUN_TEST(test_iteration_zero_outputs_off_and_holds_next_level);
+    RUN_TEST(test_regular_iteration_outputs_current_level_then_toggles);
+    RUN_TEST(test_multiple_of_eleven_outputs_current_level_and_holds);
+    (void)UNITY_END();
+    
 }

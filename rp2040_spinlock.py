@@ -1,11 +1,11 @@
-if request.isInit:
+if request.IsInit:
     SPINLOCKS = [1 for _ in range(0,32)]
-elif request.isRead:
-    if SPINLOCKS[request.offset // 4]:
-        SPINLOCKS[request.offset // 4] = 0
-        request.value = 1
+elif request.IsRead:
+    if SPINLOCKS[request.Offset // 4]:
+        SPINLOCKS[request.Offset // 4] = 0
+        request.Value = 1
     else:
-        request.value = 0
-elif request.isWrite:
-    SPINLOCKS[request.offset // 4] = 1
-    request.value = 1 << (request.offset // 4)
+        request.Value = 0
+elif request.IsWrite:
+    SPINLOCKS[request.Offset // 4] = 1
+    request.Value = 1 << (request.Offset // 4)

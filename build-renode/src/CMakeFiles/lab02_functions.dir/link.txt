@@ -1,0 +1,2 @@
+/usr/bin/arm-none-eabi-ar qc liblab02_functions.a CMakeFiles/lab02_functions.dir/functions.c.o
+/usr/bin/arm-none-eabi-ranlib liblab02_functions.a

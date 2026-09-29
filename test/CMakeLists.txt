@@ -50,19 +50,45 @@ pico_enable_stdio_usb(mytest 0)
 
 # This will speed up the simulation, since data won't be copied from the flash controller.
 # It does make the binary non-persistent on a real microcontroller.
-# pico_set_binary_type(mytest no_flash)
+pico_set_binary_type(mytest no_flash)
 
-find_program(RENODE renode
-# This is extra stuff so it can find the mac installation paths.
- NAMES macos_run.command Renode.exe
- PATHS /Applications/Renode.app/Contents/MacOS)
+# Locate Renode
+find_program(RENODE
+    NAMES
+        renode
+        macos_run.command
+        Renode.exe
+    PATHS
+        /Applications/Renode.app/Contents/MacOS
+)
 
-set(RENODE_FLAGS
-  --disable-xwt
-  --port -2
-  --pid-file renode.pid
-  --console
-  )
+if(RENODE)
+    set(RENODE_FLAGS
+        --disable-gui
+        --port
+        -2
+        --pid-file
+        renode.pid
+        --console
+    )
+
+    add_test(
+        NAME simulate_mytest
+        COMMAND
+            ${RENODE}
+            ${RENODE_FLAGS}
+            -e "$ELF=@$<TARGET_FILE:mytest>; $WORKING=@${CMAKE_SOURCE_DIR}; include @${CMAKE_SOURCE_DIR}/simulate.resc; start"
+    )
+
+    set_tests_properties(simulate_mytest PROPERTIES
+        TIMEOUT 30
+    )
+else()
+    message(WARNING
+        "Renode was not found"
+    )
+endif()
+
 find_program(PICOTOOL picotool)
 
 if(PICOTOOL)
