@@ -50,7 +50,15 @@ pico_enable_stdio_usb(mytest 0)
 
 # This will speed up the simulation, since data won't be copied from the flash controller.
 # It does make the binary non-persistent on a real microcontroller.
-pico_set_binary_type(mytest no_flash)
+option(
+    LAB_TEST_NO_FLASH
+    "Link mytest into RAM for Renode simulation"
+    OFF
+)
+
+if(LAB_TEST_NO_FLASH)
+    pico_set_binary_type(mytest no_flash)
+endif()
 
 # Locate Renode
 find_program(RENODE
