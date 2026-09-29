@@ -1,6 +1,10 @@
-add_executable(mytest test.c unity_config.c)
 
+
+target_include_directories(${target_name} PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+    )
 target_link_libraries(mytest PRIVATE
+  lab02_functions
   pico_stdlib
   pico_async_context_freertos
   FreeRTOS-Kernel-Heap4
@@ -23,6 +27,21 @@ pico_enable_stdio_usb(mytest 0)
 # This will speed up the simulation, since data won't be copied from the flash controller.
 # It does make the binary non-persistent on a real microcontroller.
 # pico_set_binary_type(mytest no_flash)
+
+# Pure unit tests
+
+add_executable(mytest
+    test_functions.c
+    unity_config.c
+)
+configure_lab_test(mytest)
+
+# Hardware integration tests
+add_executable(hardware_test
+    test_blink_hardware.c
+    unity_config.c
+)
+configure_lab_test(hardware_test)
 
 find_program(RENODE renode
 # This is extra stuff so it can find the mac installation paths.
