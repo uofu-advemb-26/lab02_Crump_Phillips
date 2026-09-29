@@ -1,7 +1,7 @@
 Testing
 build
 log
-
+/build-renode/
 *.log.*
 *-asciinema
 *.pid
